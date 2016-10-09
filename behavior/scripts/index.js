@@ -46,9 +46,8 @@ const collectCity = client.createStep({
   satisfied() {
     return Boolean(client.getConversationState().weatherCity)
   },
-	
-	
-	  extractInfo() {
+
+  extractInfo() {
     const city = firstOfEntityRole(client.getMessagePart(), 'city')
 
     if (city) {
@@ -60,7 +59,7 @@ const collectCity = client.createStep({
     }
   },
 
-prompt() {
+  prompt() {
     client.addResponse('app:response:name:prompt/weather_city')
     client.done()
   },
@@ -76,16 +75,16 @@ const provideWeather = client.createStep({
     client.done()
   },
 })
-    
+  
+  
 
   client.runFlow({
     classifications: {},
-    
     streams: {
-      main: 'getWeather',
-      onboarding: [sayHello],
-      end: [untrained],
-	    getWeather: [collectCity, provideWeather],
+      	main: 'getWeather',
+      	onboarding: [sayHello],
+      	end: [untrained],
+	getWeather: [collectCity, provideWeather],
     }
   })
 }
