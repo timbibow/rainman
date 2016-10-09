@@ -31,20 +31,19 @@ exports.handle = function handle(client) {
     }
   })
   
-    const collectCity = client.createStep({
-    satisfied() {
-      return Boolean(client.getConversationState().weatherCity)
-    },
+const collectCity = client.createStep({
+  satisfied() {
+    return Boolean(client.getConversationState().weatherCity)
+  },
 
-    prompt() {
-	    //Need to prompt client for a city
-      console.log('Need to ask user for a city')
-      client.done()
-    }
-  })
-    
-    
-    const provideWeather = client.createStep({
+  prompt() {
+    // Need to prompt user for city    
+    console.log('Need to ask user for city')
+    client.done()
+  },
+})
+
+const provideWeather = client.createStep({
   satisfied() {
     return false
   },
