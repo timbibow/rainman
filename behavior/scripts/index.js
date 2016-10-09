@@ -1,5 +1,7 @@
 'use strict'
 
+const getCurrentWeather = require('./lib/getCurrentWeather')
+
 const firstOfEntityRole = function(message, entity, role) {
   role = role || 'generic';
 
@@ -10,10 +12,9 @@ const firstOfEntityRole = function(message, entity, role) {
   return valsForRole ? valsForRole[0] : null
 }
 
-
 exports.handle = function handle(client) {
-
-    const collectCity = client.createStep({
+  
+const collectCity = client.createStep({
     satisfied() {
       return Boolean(client.getConversationState().weatherCity)
     },
@@ -38,8 +39,14 @@ exports.handle = function handle(client) {
     satisfied() {
       return false
     },
-	
-	
+
+	   prompt() {
+    // Need to provide weather
+    client.done()
+  },
+     
+      })
+
 
   client.runFlow({
     classifications: {},
