@@ -13,78 +13,39 @@ const firstOfEntityRole = function(message, entity, role) {
 
 exports.handle = function handle(client) {
 
-  const sayHello = client.createStep({
+    const collectCity = client.createStep({
     satisfied() {
-      return Boolean(client.getConversationState().helloSent)
+      return Boolean(client.getConversationState().weatherCity)
+    },
+
+    extractInfo() {
+     const city = firstOfEntityRole(client.getMessagePart(), 'city')
+      if (city) {
+        client.updateConversationState({
+          weatherCity: city,
+        })
+        console.log('User wants the weather in:', city.value)
+      }
     },
 
     prompt() {
-      client.addResponse('app:response:name:welcome')
-      client.addResponse('app:response:name:provide/documentation', {
-        documentation_link: 'http://docs.init.ai',
-      })
-      client.addResponse('app:response:name:provide/instructions')
-      client.updateConversationState({
-        helloSent: true
-      })
+      client.addResponse('app:response:name:prompt/weather_city')
       client.done()
-    }
+    },
   })
 
-  const untrained = client.createStep({
+  const provideWeather = client.createStep({
     satisfied() {
       return false
     },
-
-    prompt() {
-      client.addResponse('app:response:name:apology/untrained')
-      client.done()
-    }
-  })
-  
-const collectCity = client.createStep({
-  satisfied() {
-    return Boolean(client.getConversationState().weatherCity)
-  },
-
-  extractInfo() {
-    const city = firstOfEntityRole(client.getMessagePart(), 'city')
-
-    if (city) {
-      client.updateConversationState({
-        weatherCity: city,
-      })
-
-      console.log('User wants the weather in:', city.value)
-    }
-  },
-
-  prompt() {
-    client.addResponse('app:response:name:prompt/weather_city')
-    client.done()
-  },
-})
-
-const provideWeather = client.createStep({
-  satisfied() {
-    return false
-  },
-
-  prompt() {
-    // Need to provide weather
-    client.done()
-  },
-})
-  
-  
+	
+	
 
   client.runFlow({
     classifications: {},
     streams: {
-      	main: 'getWeather',
-      	onboarding: [sayHello],
-      	end: [untrained],
-	getWeather: [collectCity, provideWeather],
+      main: 'getWeather',
+      getWeather: [collectCity, provideWeather],
     }
   })
 }
