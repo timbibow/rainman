@@ -1,11 +1,12 @@
 {
-  "name": "rainman",
+  "name": "tutorial-02",
   "version": "0.0.0",
   "main": "behavior/scripts/index.js",
   "scripts": {},
   "license": "UNLICENSED",
   "private": true,
   "dependencies": {
-    "initai-node": "https://gitlab.com/init-devs/node-client/repository/archive.tar.gz?ref=master"
+    "initai-node": "https://gitlab.com/init-devs/node-client/repository/archive.tar.gz?ref=master",
+    "request": "^2.74.0"
   }
 }
